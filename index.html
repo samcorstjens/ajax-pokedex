@@ -1,0 +1,174 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <!-- ▬▬▬▬▬▬▬▬▬▬▬ INFORMATION ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ -->
+    <title>Pokedex</title>
+    <meta name="description" content="Pokedex">
+    <meta name="keywords" content="Pokedex">
+    <meta name="author" content="Michiel Celis">
+    <link rel='shortcut icon' type='image/x-icon' href='favicon.ico' />
+    <!-- ▬▬▬▬▬▬▬▬▬▬▬ STYLESHEETS ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ -->
+    <link rel="stylesheet" type="text/css" href="css/styling.css" />
+
+    <!-- ▬▬▬▬▬▬▬▬▬▬▬ JAVASCRIPT ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ -->
+    <script rel="external" type="text/javascript" src="https://unpkg.com/pokeapi-js-wrapper/dist/index.js"></script>
+    <script rel="external" type="text/javascript" src="js/jquery.js"></script>
+    <script rel="external" type="text/javascript" src="js/layout.js"></script>
+</head>
+
+<body>
+    <div id="pokedex">
+        <div id="pokedex-left">
+			<div id="pokedex-left-name">
+				<div id="pokedex-left-name-word">
+          <input id="naamIngeven"></input>
+          <button id="knop">I chose you!</button>
+        </div>
+
+			</div>
+			<div id="pokedex-left-screen">
+
+			</div>
+			<div id="pokedex-left-buttons">
+				<div id="pokedex-left-cross">
+					<div id="pokedex-left-cross-up" class="roundbutton"></div>
+					<div id="pokedex-left-cross-mid">
+						<div id="pokedex-left-cross-left" class="roundbutton"></div>
+						<div id="pokedex-left-cross-right" class="roundbutton"></div>
+					</div>
+					<div id="pokedex-left-cross-down" class="roundbutton"></div>
+				</div>
+				<div id="pokedex-left-numberwrap">
+					000
+				</div>
+				<div id="pokedex-left-touchpad">
+                    <div id="pokedex-left-touchpad">
+    					<div id="pokedex-left-touchpad-up" class="squarebutton">Y</div>
+    					<div id="pokedex-left-touchpad-mid">
+    						<div id="pokedex-left-touchpad-left" class="squarebutton">X</div>
+    						<div id="pokedex-left-touchpad-right" class="squarebutton">B</div>
+    					</div>
+    					<div id="pokedex-left-touchpad-down" class="squarebutton">A</div>
+                    </div>
+                </div>
+			</div>
+        </div>
+        <div id="pokedex-right">
+			<div id="pokedex-right-upperscreen">
+				ATTACKS
+        <p id ="aanval1"></p>
+        <p id ="aanval2"></p>
+        <p id ="aanval3"></p>
+        <p id ="aanval4"></p>
+			</div>
+
+      <div id="pokedex-right-middlescreen">
+                TYPE
+                <p id="type"></p>
+			</div>
+			<div id="pokedex-right-lowerscreen">
+                EVOLUTION
+                <p id ="preEvolution"></p>
+    						<img id="preafb"></img>
+			</div>
+        </div>
+    </div>
+
+    <script>
+    function gottacatchthatpokemon(){
+    var pokemonname = $("#naamIngeven").val();
+      $.ajax({
+        url: 'https://pokeapi.co/api/v2/pokemon/' + pokemonname + '/', dataType: 'json', success: function(data) {
+          var ant = data;
+          console.log(ant);
+          var nummer = ant.id;
+          var afbeelding = ant.sprites.front_default;
+          var vorigeevolutie = ant.species.url;
+          var type1 = ant.types[0].type.name;
+          var type2 = ant.types[1]
+          if (type2 == undefined){
+            type2 = "";
+          }else{
+            type2=ant.types[1].type.name;
+          }
+          console.log(type1);
+          console.log(type2);
+          console.log(vorigeevolutie);
+
+      if(ant.moves.length==3){
+        var moveset1 = ant.moves[0].move.name;
+        var moveset2 = ant.moves[1].move.name;
+        var moveset3 = ant.moves[2].move.name;
+        var moveset4 = "/"
+      }else if(ant.moves.lenght == 2){
+        var moveset1 = ant.moves[0].move.name;
+        var moveset2 = ant.moves[1].move.name;
+        var moveset3 = "/";
+        var moveset4 = "/";
+      }else if(ant.moves.length == 1){
+        var moveset1 = ant.moves[0].move.name;
+        var moveset2 = "/";
+        var moveset3 = "/";
+        var moveset4 = "/";
+      }else{
+          do{
+          var moveset1 = ant.moves[Math.floor(Math.random()*ant.moves.length)].move.name;
+          var moveset2 = ant.moves[Math.floor(Math.random()*ant.moves.length)].move.name;
+          var moveset3 = ant.moves[Math.floor(Math.random()*ant.moves.length)].move.name;
+          var moveset4 = ant.moves[Math.floor(Math.random()*ant.moves.length)].move.name
+    }while (moveset1 == moveset2 || moveset1 == moveset3 || moveset1 == moveset4 ||moveset2 == moveset3 || moveset2 == moveset4 || moveset3 == moveset4);
+    }
+
+          $("#pokedex-left-numberwrap").html(nummer);
+          $("#pokedex-left-screen").css("background-image", "url('" + afbeelding + "')");
+          $("#aanval1").html("move 1 : " + moveset1);
+          $("#aanval2").html("move 2 : " + moveset2);
+          $("#aanval3").html("move 3 : " + moveset3);
+          $("#aanval4").html("move 4 : " + moveset4);
+          $("#type").html(type2 + " " + type1);
+
+
+    $.ajax({url : vorigeevolutie, dataType: 'json', success: function(data2){
+    var ant2 = data2;
+    console.log(ant2);
+    var chain;
+
+    if (ant2.evolves_from_species == null){
+      chain = "no-evolve";
+      notevolve();
+    }else{
+      chain = ant2.evolves_from_species.name;
+      evolve(chain);
+
+    }
+    }})
+           },
+        error: function() { alert("Error detected"); },
+
+    });
+    }
+    $("document").ready(function(){
+        $("#knop").on('click', gottacatchthatpokemon);
+    })
+
+    function notevolve(){
+      $("#preEvolution").html("Geen vorige vorm");
+      $("#preafb").attr("src", "");
+    }
+
+    function evolve(chain2){
+      $.ajax({url : 'https://pokeapi.co/api/v2/pokemon/' + chain2 + '/', dataType: 'json', success: function(data3){
+        var ant3 = data3;
+        var afbeeldingvorig = ant3.sprites.front_default;
+        var naamvorig = ant3.name;
+        console.log(ant3);
+        $("#preafb").attr("src", afbeeldingvorig);
+        $("#preEvolution").html("Evolved from " + naamvorig);
+      }})
+    }
+    </script>
+</body>
+
+</html>
